@@ -8,7 +8,7 @@ this is an awesome mod and you should keep it forever in your mods folder
 <img src="https://estatic.elliemese.win/goldenapple.png" width="80" height="80"/> VIM Members/People who are in the Gorilla Tag Fan Club<br>
 <img src="https://estatic.elliemese.win/diamond.png" width="80" height="80"/> People I know to some degree/Known modders<br>
 <img src="https://estatic.elliemese.win/cmdblock.png" width="80" height="80"/> Estatic & Mia7z the makers of the mod<br>
-<img src="https://estatic.elliemese.win/AAC.png" width="80" height="80"/> VIM Members/People who are in the Gorilla Tag Fan Club<br>
+<img src="https://estatic.elliemese.win/AAC.png" width="80" height="80"/> Only shows up if someone is wearing the AAC Badge<br>
 <img src="https://estatic.elliemese.win/PinkDye.png" width="80" height="80"/> Estatic's Boyfriend<br>
 <img src="https://estatic.elliemese.win/golblcok.png" width="80" height="80"/> GoldenIsAProtogen, they helped out with hearts for paintbrawl a lil<br>
 ## Features
