@@ -16,6 +16,8 @@ this is an awesome mod and you should keep it forever in your mods folder
 <img src="https://estatic.elliemese.win/hearts.gif" width="250" height="250"/> <br>
 ### Voice Activation Indicator!
 <img src="https://estatic.elliemese.win/speakeric.gif" width="250" height="250"/> <br>
+muted variant <br>
+<img src="https://estatic.elliemese.win/muteicongif.gif" width="250" height="250"/> <br>
 ## FAQ
 ### Q:Can i have diamond? <br>
 A:not unless i know you
