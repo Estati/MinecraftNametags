@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GorillaLibrary.Content.Utilities;
+using GorillaLibrary.Extensions;
 using GorillaLibrary.Utilities;
 using MelonLoader;
 using Photon.Pun;
@@ -14,11 +16,11 @@ namespace MinecraftNametags.Behaviours;
 public enum Significance
 {
     VIM,
-    Known,
-    Estatic,
-    AAC,
-    Boyfriend,
-    Golden
+    Known,      //DIAMOND
+    Developer,  //CMD
+    AAC,        
+    Boyfriend,  //DYE
+    Golden      //GOLD
 }
 
 /// <summary>
@@ -35,6 +37,7 @@ public class Nametag : MonoBehaviour
     public Canvas canvas;
 
     public Sprite[] healthSprite;
+    public Sprite[] significanceSprite;
     
     public GameObject speakerIcon;
     
@@ -56,8 +59,11 @@ public class Nametag : MonoBehaviour
         
         rig = GetComponent<VRRig>();
         MelonLogger.Msg("Loading nametag object...");
+        
         nametag = Instantiate(Mod.Instance.Bundle.LoadAsset<GameObject>("Nametag"));
         healthSprite = Mod.Instance.Bundle.LoadAssetWithSubAssets<Sprite>("hearts_sheet");
+        significanceSprite = Mod.Instance.Bundle.LoadAssetWithSubAssets<Sprite>("iconsheet");
+        
         OnLoadComplete();
     }
     public void OnLoadComplete()
@@ -155,6 +161,32 @@ public class Nametag : MonoBehaviour
         nameText.text = rig.playerText1.text;
         outline.color = rig.playerColor;
 
-        significanceIcon.enabled = false; //ADD IMPLEMENTATION FOR THIS WHEN SPRITESHEET IS COMPLETE! -mia
+        significanceIcon.enabled = IsSignificant(rig);
+    }
+    
+    public void SetSignificanceIcon(int index)
+    {
+        if (significanceIcon.sprite != significanceSprite[index])
+        {
+            MelonLogger.Msg("Set significance icon to index "+index);
+            significanceIcon.sprite = significanceSprite[index];
+        }
+    }
+    
+    public bool IsSignificant(VRRig rig)
+    {
+        if (rig.GetCosmetics().items.Any(x => x.itemName == "LBANI."))
+        {
+            SetSignificanceIcon(3); //AAC
+            return true;
+        }
+
+        if (Mod.Instance.SignificanceMapping.TryGetValue(rig.Creator.UserId, out Significance significance))
+        {
+            SetSignificanceIcon((int)significance);
+            return true;
+        }
+        
+        return false;
     }
 }
