@@ -205,10 +205,13 @@ public class Nametag : MonoBehaviour
     
     public void CheckSignificance(VRRig rig)
     {
-        if (rig.GetCosmetics().items.Any(x => x.itemName == "LBANI."))
+        if (rig._playerOwnedCosmetics.Contains("LBANI."))
         {
-            SetSignificanceIcon(3); //AAC
-            return;
+            if (rig.GetCosmetics().items.Any(x => x.itemName == "LBANI."))
+            {
+                SetSignificanceIcon(3); //AAC
+                return;
+            }
         }
         if (Mod.Instance.SignificanceMapping.TryGetValue(rig.Creator.UserId, out Significance significance))
         {
