@@ -4,3 +4,5 @@ MinecraftNametags/.idea/.idea.MinecraftNametags/.idea/discord.xml
 /MinecraftNametags/MinecraftNametags/obj
 /MinecraftNametags/.idea
 /MinecraftNametags/obj
+/MinecraftNametags/bin
+*.user
