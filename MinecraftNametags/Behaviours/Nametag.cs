@@ -143,6 +143,8 @@ public class Nametag : MonoBehaviour
 
         canvas.transform.eulerAngles = new Vector3(GorillaTagger.Instance.mainCamera.transform.eulerAngles.x,
             GorillaTagger.Instance.mainCamera.transform.eulerAngles.y, 0);
+
+        nameText.text = rig.playerText1.text;
     }
 
     public static void UpdateAllPaintbrawl()
@@ -187,7 +189,6 @@ public class Nametag : MonoBehaviour
         paintBrawlHealthParent.SetActive(GorillaGameManager.instance is GorillaPaintbrawlManager); //"Probably not the best way but it works :thinking:" -mia
         UpdatePaintbrawlState();
         
-        nameText.text = rig.playerText1.text;
         outline.color = rig.playerColor;
 
         CheckSignificance(rig);
