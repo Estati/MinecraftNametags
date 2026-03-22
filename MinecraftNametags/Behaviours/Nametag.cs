@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GorillaLibrary.Content.Utilities;
 using GorillaLibrary.Extensions;
 using GorillaLibrary.Utilities;
+using GorillaTagScripts;
 using MelonLoader;
 using Photon.Pun;
 using TMPro;
@@ -40,6 +41,8 @@ public class Nametag : MonoBehaviour
     public Sprite[] significanceSprite;
     
     public GameObject speakerIcon;
+    public Sprite regularSpeaker;
+    public Sprite mutedSpeaker;
     
     public TextMeshProUGUI nameText;
     public Image outline;
@@ -64,8 +67,30 @@ public class Nametag : MonoBehaviour
         healthSprite = Mod.Instance.Bundle.LoadAssetWithSubAssets<Sprite>("hearts_sheet");
         significanceSprite = Mod.Instance.Bundle.LoadAssetWithSubAssets<Sprite>("iconsheet");
         
+        regularSpeaker = Mod.Instance.Bundle.LoadAsset<Sprite>("voicechat_icon");
+        mutedSpeaker = Mod.Instance.Bundle.LoadAsset<Sprite>("voicemute_icon");
+        
         OnLoadComplete();
     }
+
+    public void OnEnable()
+    {
+        UpdateState();
+        StartCoroutine(Tick());
+    }
+    
+    IEnumerator Tick() //if all else fails resort to 1 second tick :( -mia
+    {
+        for (;;)
+        {
+            if (!enabled)
+                yield break; //???
+            yield return new WaitForSeconds(1);
+            UpdateState();
+        }
+    }
+    
+    
     public void OnLoadComplete()
     {
         nametag.transform.SetParent(rig.transform, false);
@@ -85,20 +110,9 @@ public class Nametag : MonoBehaviour
             paintBrawlHealthParent.transform.GetChild(2).gameObject,
         ];
         
-        rig.OnColorChanged += color =>
-        {
-            UpdateState();
-        };
-        rig.OnNameChanged += container =>
-        {
-            UpdateState();
-        };
-
+        rig.OnColorChanged += color => { UpdateState(); };
+        rig.OnNameChanged += container => { UpdateState();};
         loaded = true;
-    }
-
-    public void OnEnable()
-    {
         UpdateState();
     }
 
@@ -110,8 +124,22 @@ public class Nametag : MonoBehaviour
     public void Update()
     {
         if (!loaded) return;
-        if (rigContainer)
-            speakerIcon.SetActive(rigContainer.Voice.IsSpeaking);
+        
+        if (rigContainer )
+        {
+            if (!rigContainer.Muted)
+            {
+                if (speakerIcon.GetComponent<Image>().sprite != regularSpeaker)
+                    speakerIcon.GetComponent<Image>().sprite = regularSpeaker;
+            }
+            else
+            {
+                if (speakerIcon.GetComponent<Image>().sprite != mutedSpeaker)
+                    speakerIcon.GetComponent<Image>().sprite = mutedSpeaker;
+            }
+        
+            speakerIcon.SetActive(rigContainer.Muted || rigContainer.Voice.IsSpeaking);
+        }
 
         canvas.transform.eulerAngles = new Vector3(GorillaTagger.Instance.mainCamera.transform.eulerAngles.x,
             GorillaTagger.Instance.mainCamera.transform.eulerAngles.y, 0);
@@ -143,6 +171,7 @@ public class Nametag : MonoBehaviour
     
     public void UpdateState()
     {
+        if (!loaded) return;
         if (GorillaGameManager.instance == null) return;
         if (rigContainer == null)
         {
@@ -161,32 +190,38 @@ public class Nametag : MonoBehaviour
         nameText.text = rig.playerText1.text;
         outline.color = rig.playerColor;
 
-        significanceIcon.enabled = IsSignificant(rig);
+        CheckSignificance(rig);
     }
+    
+    // i hate everything about these methods -mia
     
     public void SetSignificanceIcon(int index)
     {
-        if (significanceIcon.sprite != significanceSprite[index])
-        {
-            MelonLogger.Msg("Set significance icon to index "+index);
-            significanceIcon.sprite = significanceSprite[index];
-        }
+        MelonLogger.Msg(rig.gameObject.GetInstanceID()+"'s significance is an index of "+index);
+        significanceIcon.sprite = significanceSprite[index];
+        significanceIcon.gameObject.SetActive(true);
+        significanceIcon.enabled = true;
     }
     
-    public bool IsSignificant(VRRig rig)
+    public void CheckSignificance(VRRig rig)
     {
         if (rig.GetCosmetics().items.Any(x => x.itemName == "LBANI."))
         {
             SetSignificanceIcon(3); //AAC
-            return true;
+            return;
         }
-
         if (Mod.Instance.SignificanceMapping.TryGetValue(rig.Creator.UserId, out Significance significance))
         {
+            MelonLogger.Msg("!!!!!! "+rig.Creator.UserId+" => "+significance);
             SetSignificanceIcon((int)significance);
-            return true;
+            return;
         }
-        
-        return false;
+        if (SubscriptionManager.IsPlayerSubscribed(rig))
+        {
+            SetSignificanceIcon(0); //VIM
+            return;
+        }
+        significanceIcon.gameObject.SetActive(false);
+        significanceIcon.enabled = false;
     }
 }
