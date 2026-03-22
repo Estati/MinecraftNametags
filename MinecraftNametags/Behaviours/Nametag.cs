@@ -197,7 +197,6 @@ public class Nametag : MonoBehaviour
     
     public void SetSignificanceIcon(int index)
     {
-        MelonLogger.Msg(rig.gameObject.GetInstanceID()+"'s significance is an index of "+index);
         significanceIcon.sprite = significanceSprite[index];
         significanceIcon.gameObject.SetActive(true);
         significanceIcon.enabled = true;
@@ -215,7 +214,6 @@ public class Nametag : MonoBehaviour
         }
         if (Mod.Instance.SignificanceMapping.TryGetValue(rig.Creator.UserId, out Significance significance))
         {
-            MelonLogger.Msg("!!!!!! "+rig.Creator.UserId+" => "+significance);
             SetSignificanceIcon((int)significance);
             return;
         }

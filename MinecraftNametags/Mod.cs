@@ -54,9 +54,6 @@ public class Mod : MelonMod
                 {
                     string UID = line.Split(':')[0];
                     string SIGNIFICANCE = line.Split(':')[1];
-
-                    MelonLogger.Msg("UserID: " + UID);
-                    MelonLogger.Msg("Significance: " + SIGNIFICANCE);
                 
                     switch (SIGNIFICANCE)
                     {
