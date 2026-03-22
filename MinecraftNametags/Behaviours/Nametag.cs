@@ -124,8 +124,8 @@ public class Nametag : MonoBehaviour
     public void Update()
     {
         if (!loaded) return;
-        
-        if (rigContainer )
+
+        if (rigContainer)
         {
             if (!rigContainer.Muted)
             {
@@ -137,9 +137,12 @@ public class Nametag : MonoBehaviour
                 if (speakerIcon.GetComponent<Image>().sprite != mutedSpeaker)
                     speakerIcon.GetComponent<Image>().sprite = mutedSpeaker;
             }
-        
-            speakerIcon.SetActive(rigContainer.Muted || rigContainer.Voice.IsSpeaking);
+
+            if (rigContainer.Voice)
+                speakerIcon.SetActive(rigContainer.Muted || rigContainer.Voice.IsSpeaking);
         }
+        else
+            return;
 
         canvas.transform.eulerAngles = new Vector3(GorillaTagger.Instance.mainCamera.transform.eulerAngles.x,
             GorillaTagger.Instance.mainCamera.transform.eulerAngles.y, 0);

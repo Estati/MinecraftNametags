@@ -10,6 +10,7 @@
 
     <Target Name="CopyToPlugins" AfterTargets="Build">
       <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(GamePath)/Mods/$(TargetFileName)" />
+      <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(GamePath)/Mods/$(TargetName).pdb"/>
       <Message Text="Copied to Plugins" Importance="high"/>
     </Target>
 
