@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MelonLoader;
 using MinecraftNametags;
-using GorillaLibrary.Content.Utilities;
+using GorillaLibrary.Utilities;
 using GorillaLibrary.Models;
 using MinecraftNametags.Behaviours;
 using PlayFab.ClientModels;
@@ -29,7 +29,6 @@ public class Mod : MelonMod
     public override void OnLateInitializeMelon()
     {
         base.OnLateInitializeMelon();
-
         SignificanceMapping =  new Dictionary<string, Significance>();
         SetupSignificance();
         

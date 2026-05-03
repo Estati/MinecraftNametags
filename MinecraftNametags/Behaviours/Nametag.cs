@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GorillaLibrary.Content.Utilities;
+using GorillaLibrary.Utilities;
 using GorillaLibrary.Extensions;
 using GorillaLibrary.Utilities;
 using GorillaTagScripts;
